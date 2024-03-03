@@ -1,33 +1,28 @@
 pipeline {
     agent any
-
-    tools {
-        maven "MAVEN"
-        jdk "JDK"
+    environment {
+        // Use the pre-configured MAVEN_HOME environment variable
+        MVN_HOME = '"C:\\Program Files\\apache-maven-3.8.5"'
     }
-
     stages {
-        stage('Initialize'){
-            steps{
-                echo "PATH = ${M2_HOME}/bin:${PATH}"
-                echo "M2_HOME = /opt/maven"
+        stage('git') {
+            steps {
+                git branch: 'main', credentialsId: '64338209-c2d5-4594-a04d-6672d7838d12', url: 'https://github.com/joel2500/JenkinsDemo.git'
             }
         }
-        stage('Build') {
+        stage('Build with Maven') {
             steps {
-                dir("/var/lib/jenkins/workspace/New_demo/my-app/") {
-                sh 'mvn -B -DskipTests clean package'
-                }
-            
+             dir('my-app') {
+                bat "${MVN_HOME}\\bin\\mvn clean install"
             }
         }
      }
-    post {
-       always {
-          junit(
-        allowEmptyResults: true,
-        testResults: '*/test-reports/.xml'
-      )
-      }
-   } 
+       stage('Code-Analysis') {
+            steps {
+             dir('my-app') {
+                bat "${MVN_HOME}\\bin\\mvn test"
+            }
+        }
+     }     
+  }
 }
