@@ -1,20 +1,24 @@
 pipeline {
     agent any
+    environment {
+        // Use the pre-configured MAVEN_HOME environment variable
+        MVN_HOME = '/opt/apache-maven-3.6.3'
+    }
     stages {
         stage('git') {
             steps {
                 git branch: 'main', url: 'https://github.com/joel2500/JenkinsDemo.git'
             }
         }
-        stage('Code-Compile') {
+        stage('Build with Maven') {
             steps {
-                sh "mvn clean install"
+                sh "${MVN_HOME}/opt/apache-maven-3.6.3/bin/mvn clean install"
         }
      }
        stage('Code-Analysis') {
             steps {
-                sh "mvn test"
-            }
+                sh "${MVN_HOME}/opt/apache-maven-3.6.3/bin/mvn test"
         }
      }     
   }
+}
