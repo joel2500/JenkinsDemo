@@ -6,19 +6,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/joel2500/JenkinsDemo.git'
             }
         }
-        stage('Build with Maven') {
+        stage('Code-Compile') {
             steps {
-              {
                 sh "mvn clean install"
-            }
         }
      }
        stage('Code-Analysis') {
             steps {
-              {
                 sh "mvn test"
             }
         }
      }     
   }
-}
