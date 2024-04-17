@@ -12,12 +12,12 @@ pipeline {
         }
         stage('Build with Maven') {
             steps {
-                sh "${MVN_HOME}/opt/apache-maven-3.6.3/bin/mvn clean install"
+                sh "${MVN_HOME}/bin/mvn clean install"
         }
      }
        stage('Code-Analysis') {
             steps {
-                sh "${MVN_HOME}/opt/apache-maven-3.6.3/bin/mvn test"
+                sh "${MVN_HOME}/bin/mvn test"
         }
      }     
   }
